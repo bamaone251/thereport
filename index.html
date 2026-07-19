@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Lower Alabama Outdoors</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="radar-pulse"></div>
+        <h1 class="site-title">LOWER <span class="accent">ALABAMA</span> OUTDOORS</h1>
+      </div>
+      <div class="header-right">
+        <span class="location-label" id="location-label">📍 Fairhope, AL</span>
+        <span class="clock" id="clock">--:-- --</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAV TABS -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="today">TODAY</button>
+    <button class="tab-btn" data-tab="radar">RADAR</button>
+    <button class="tab-btn" data-tab="tides">TIDES</button>
+    <button class="tab-btn" data-tab="bite">BITE TIMES</button>
+    <button class="tab-btn" data-tab="links">LINKS</button>
+  </nav>
+
+  <!-- ===================== TAB: TODAY ===================== -->
+  <section class="tab-panel active" id="tab-today">
+
+    <!-- Current Conditions Card -->
+    <div class="conditions-card card">
+      <div class="conditions-header">
+        <span class="conditions-label">CURRENT CONDITIONS</span>
+        <span class="conditions-updated" id="conditions-updated">Updating...</span>
+      </div>
+      <div class="conditions-main">
+        <div class="temp-block">
+          <span class="temp-value" id="temp">--</span>
+          <span class="temp-unit">°F</span>
+        </div>
+        <div class="conditions-desc">
+          <div class="wx-desc" id="wx-desc">Loading...</div>
+          <div class="feels-like">Feels like <span id="feels-like">--</span>°F</div>
+        </div>
+      </div>
+      <div class="conditions-grid">
+        <div class="cond-item">
+          <span class="cond-icon">💧</span>
+          <span class="cond-label">Humidity</span>
+          <span class="cond-val" id="humidity">--%</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">💨</span>
+          <span class="cond-label">Wind</span>
+          <span class="cond-val" id="wind">-- mph --</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">🌧️</span>
+          <span class="cond-label">Rain (1h)</span>
+          <span class="cond-val" id="rain">-- in</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">👁️</span>
+          <span class="cond-label">Visibility</span>
+          <span class="cond-val" id="visibility">-- mi</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">📊</span>
+          <span class="cond-label">Pressure</span>
+          <span class="cond-val" id="pressure">-- inHg</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">🌡️</span>
+          <span class="cond-label">Dew Point</span>
+          <span class="cond-val" id="dewpoint">--°F</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts Banner -->
+    <div class="alerts-banner" id="alerts-banner" style="display:none;">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text" id="alert-text"></div>
+    </div>
+
+    <!-- Hourly Forecast Strip -->
+    <div class="card">
+      <div class="card-title">HOURLY FORECAST</div>
+      <div class="hourly-strip" id="hourly-strip">
+        <div class="hourly-loading">Loading hourly data...</div>
+      </div>
+    </div>
+
+    <!-- 7-Day Forecast -->
+    <div class="card">
+      <div class="card-title">7-DAY FORECAST</div>
+      <div class="daily-list" id="daily-list">
+        <div class="hourly-loading">Loading forecast...</div>
+      </div>
+    </div>
+
+    <!-- Sun/Moon Card -->
+    <div class="card">
+      <div class="card-title">SUN &amp; MOON</div>
+      <div class="sunmoon-grid">
+        <div class="sm-item">
+          <span class="sm-icon">🌅</span>
+          <span class="sm-label">Sunrise</span>
+          <span class="sm-val" id="sunrise">--:--</span>
+        </div>
+        <div class="sm-item">
+          <span class="sm-icon">🌇</span>
+          <span class="sm-label">Sunset</span>
+          <span class="sm-val" id="sunset">--:--</span>
+        </div>
+        <div class="sm-item">
+          <span class="sm-icon" id="moon-icon">🌙</span>
+          <span class="sm-label">Moon Phase</span>
+          <span class="sm-val" id="moon-phase">--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB: RADAR ===================== -->
+  <section class="tab-panel" id="tab-radar">
+    <div class="viewer-card card">
+      <div class="viewer-header">
+        <span class="card-title">RADAR</span>
+      </div>
+      <div class="iframe-wrap">
+        <iframe class="weather-frame"
+          src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=°F&metricWind=mph&zoom=7&overlay=radar&product=radar&level=surface&lat=30.48&lon=-87.93&message=true"
+          frameborder="0"></iframe>
+      </div>
+      <div class="frame-note">Tip: pinch to zoom, drag to pan. <a href="https://www.windy.com/?radar,30.48,-87.93,8" target="_blank">Open full screen ↗</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">RADAR &amp; SATELLITE</div>
+      <div class="link-grid">
+        <a class="link-tile" href="https://radar.weather.gov/station/KMOB/standard" target="_blank">
+          <span class="link-icon">🏛️</span>
+          <span class="link-name">NWS KMOB</span>
+          <span class="link-sub">Official Radar</span>
+        </a>
+        <a class="link-tile" href="https://weather.cod.edu/satrad/nexrad/?parms=MOB-N0B-0-24-100-usa-ww" target="_blank">
+          <span class="link-icon">📡</span>
+          <span class="link-name">COD Radar</span>
+          <span class="link-sub">Mobile, AL</span>
+        </a>
+        <a class="link-tile" href="https://rammb-slider.cira.colostate.edu/" target="_blank">
+          <span class="link-icon">🛰️</span>
+          <span class="link-name">CIRA Satellite</span>
+          <span class="link-sub">GOES GeoColor</span>
+        </a>
+        <a class="link-tile" href="https://www.windy.com/?satellite,30.48,-87.93,8" target="_blank">
+          <span class="link-icon">🌍</span>
+          <span class="link-name">Windy Satellite</span>
+          <span class="link-sub">True Color Loop</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB: TIDES ===================== -->
+  <section class="tab-panel" id="tab-tides">
+
+    <!-- Tide Status Card -->
+    <div class="tide-card card">
+      <div class="tide-header">
+        <span class="tide-label">TIDE STATUS — POINT CLEAR</span>
+        <span class="tide-updated" id="tide-updated">Updating...</span>
+      </div>
+
+      <div class="tide-now">
+        <div class="tide-now-stage">
+          <span class="tide-stage-arrow" id="tide-arrow">↗</span>
+          <span class="tide-stage-text" id="tide-stage">Rising</span>
+        </div>
+        <div class="tide-now-height">
+          <span class="tide-height-val" id="tide-height">--</span>
+          <span class="tide-height-unit">ft</span>
+        </div>
+      </div>
+
+      <!-- SVG Tide Curve -->
+      <div class="tide-graph-wrap">
+        <svg id="tide-graph" viewBox="0 0 720 220" preserveAspectRatio="none"></svg>
+      </div>
+
+      <div class="tide-events" id="tide-events">
+        <div class="hourly-loading">Loading tide predictions...</div>
+      </div>
+    </div>
+
+    <!-- Marine Conditions Card -->
+    <div class="conditions-card card">
+      <div class="conditions-header">
+        <span class="conditions-label">MARINE CONDITIONS</span>
+        <span class="conditions-updated" id="marine-updated">Updating...</span>
+      </div>
+      <div class="conditions-main">
+        <div class="temp-block">
+          <span class="temp-value" id="water-temp">--</span>
+          <span class="temp-unit">°F</span>
+        </div>
+        <div class="conditions-desc">
+          <div class="wx-desc">Water Temperature</div>
+          <div class="feels-like">Air <span id="air-temp">--</span>°F</div>
+        </div>
+      </div>
+      <div class="conditions-grid">
+        <div class="cond-item">
+          <span class="cond-icon">💨</span>
+          <span class="cond-label">Wind</span>
+          <span class="cond-val" id="marine-wind">-- mph --</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">🎏</span>
+          <span class="cond-label">Gusts</span>
+          <span class="cond-val" id="marine-gust">-- mph</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">🌊</span>
+          <span class="cond-label">Wave Hgt</span>
+          <span class="cond-val" id="wave-height">-- ft</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">👁️</span>
+          <span class="cond-label">Visibility</span>
+          <span class="cond-val" id="marine-vis">-- mi</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">🌧️</span>
+          <span class="cond-label">Rain Chance</span>
+          <span class="cond-val" id="rain-chance">--%</span>
+        </div>
+        <div class="cond-item">
+          <span class="cond-icon">⛈️</span>
+          <span class="cond-label">Conditions</span>
+          <span class="cond-val" id="marine-wx">--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marine Advisory Banner -->
+    <div class="alerts-banner" id="marine-alert-banner" style="display:none;">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text" id="marine-alert-text"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB: BITE TIMES ===================== -->
+  <section class="tab-panel" id="tab-bite">
+
+    <div class="card">
+      <div class="card-title">TODAY'S SOLUNAR RATING</div>
+      <div class="bite-rating-wrap">
+        <div class="bite-gauge">
+          <svg viewBox="0 0 200 110" class="bite-gauge-svg">
+            <path d="M 15 100 A 85 85 0 0 1 185 100" fill="none" stroke="#182338" stroke-width="14" stroke-linecap="round"/>
+            <path id="bite-gauge-arc" d="M 15 100 A 85 85 0 0 1 185 100" fill="none" stroke="#00d4ff" stroke-width="14" stroke-linecap="round" stroke-dasharray="267" stroke-dashoffset="267"/>
+          </svg>
+          <div class="bite-gauge-label">
+            <span class="bite-gauge-val" id="bite-score">--</span>
+            <span class="bite-gauge-sub">/ 5</span>
+          </div>
+        </div>
+        <div class="bite-rating-text" id="bite-rating-text">Calculating solunar activity...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">MAJOR &amp; MINOR FEEDING PERIODS</div>
+      <div class="daily-list" id="bite-periods">
+        <div class="hourly-loading">Loading solunar table...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">SPECIES NOTES — MOBILE BAY</div>
+      <div class="species-list">
+        <div class="species-row">
+          <span class="species-name">Speckled Trout</span>
+          <span class="species-tip">Moving water + grass beds, dawn/dusk best</span>
+        </div>
+        <div class="species-row">
+          <span class="species-name">Redfish</span>
+          <span class="species-tip">Shallow flats on rising tide, sight-cast on calm days</span>
+        </div>
+        <div class="species-row">
+          <span class="species-name">Flounder</span>
+          <span class="species-tip">Outgoing tide near drains and points</span>
+        </div>
+        <div class="species-row">
+          <span class="species-name">King Mackerel</span>
+          <span class="species-tip">Lower bay / nearshore, clean green water</span>
+        </div>
+        <div class="species-row">
+          <span class="species-name">Sheepshead</span>
+          <span class="species-tip">Structure &amp; pilings, slow tide change</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB: LINKS ===================== -->
+  <section class="tab-panel" id="tab-links">
+
+    <div class="card">
+      <div class="card-title">ALL TOOLS</div>
+      <div class="tools-list">
+
+        <div class="tool-section-label">RADAR &amp; MAPS</div>
+        <a class="tool-row" href="https://weather.cod.edu/satrad/" target="_blank">
+          <span class="tool-icon">📡</span>
+          <div class="tool-info">
+            <span class="tool-name">COD Satellite &amp; Radar</span>
+            <span class="tool-desc">College of DuPage — regional radar loops, multi-sensor</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://www.windy.com/?30.48,-87.93,8" target="_blank">
+          <span class="tool-icon">🌀</span>
+          <div class="tool-info">
+            <span class="tool-name">Windy.com</span>
+            <span class="tool-desc">Animated wind, rain, CAPE, lightning, waves</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://realearth.ssec.wisc.edu/" target="_blank">
+          <span class="tool-icon">🌍</span>
+          <div class="tool-info">
+            <span class="tool-name">RealEarth (SSEC)</span>
+            <span class="tool-desc">Multi-layer weather maps, satellite + radar</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://www.meteoblue.com/en/weather/maps/" target="_blank">
+          <span class="tool-icon">🗺️</span>
+          <div class="tool-info">
+            <span class="tool-name">meteoblue Maps</span>
+            <span class="tool-desc">Live satellite, radar, forecast maps</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+
+        <div class="tool-section-label">SATELLITE</div>
+        <a class="tool-row" href="https://rammb-slider.cira.colostate.edu/" target="_blank">
+          <span class="tool-icon">🛰️</span>
+          <div class="tool-info">
+            <span class="tool-name">RAMMB CIRA SLIDER</span>
+            <span class="tool-desc">GOES-16 East — GeoColor, full disk, SE sector</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://cimss.ssec.wisc.edu/goes/goeseastimages.html" target="_blank">
+          <span class="tool-icon">🔭</span>
+          <div class="tool-info">
+            <span class="tool-name">CIMSS GOES Realtime</span>
+            <span class="tool-desc">Weighting function, multi-band GOES imagery</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+
+        <div class="tool-section-label">SEVERE WEATHER</div>
+        <a class="tool-row" href="https://www.spc.noaa.gov/exper/mesoanalysis/" target="_blank">
+          <span class="tool-icon">⚠️</span>
+          <div class="tool-info">
+            <span class="tool-name">SPC Mesoscale Analysis</span>
+            <span class="tool-desc">Hourly parameters — CAPE, shear, moisture, SCP</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://www.spc.noaa.gov/products/outlook/" target="_blank">
+          <span class="tool-icon">🌪️</span>
+          <div class="tool-info">
+            <span class="tool-name">SPC Outlooks</span>
+            <span class="tool-desc">Day 1–3 convective, tornado, hail outlooks</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://www.nhc.noaa.gov/" target="_blank">
+          <span class="tool-icon">🌀</span>
+          <div class="tool-info">
+            <span class="tool-name">National Hurricane Center</span>
+            <span class="tool-desc">Official tropical outlooks &amp; tracking</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://www.tropicaltidbits.com/analysis/tropical/" target="_blank">
+          <span class="tool-icon">📊</span>
+          <div class="tool-info">
+            <span class="tool-name">Tropical Tidbits</span>
+            <span class="tool-desc">Model maps, tropical analysis</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+
+        <div class="tool-section-label">TIDES &amp; MARINE</div>
+        <a class="tool-row" href="https://tidesandcurrents.noaa.gov/waterlevels.html?id=8733821" target="_blank">
+          <span class="tool-icon">🏛️</span>
+          <div class="tool-info">
+            <span class="tool-name">NOAA Tides — Point Clear</span>
+            <span class="tool-desc">Official station data, Mobile Bay</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://www.tide-forecast.com/tides/Point-Clear-Mobile-Bay-Alabama" target="_blank">
+          <span class="tool-icon">🌊</span>
+          <div class="tool-info">
+            <span class="tool-name">Tide Chart — Point Clear</span>
+            <span class="tool-desc">Tide times + local fishing reports</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://outdooralabama.com/fishing" target="_blank">
+          <span class="tool-icon">📋</span>
+          <div class="tool-info">
+            <span class="tool-name">Outdoor Alabama</span>
+            <span class="tool-desc">Licenses, seasons, size/bag limits</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+
+        <div class="tool-section-label">LOCAL</div>
+        <a class="tool-row" href="https://www.nickelblockforecasting.com/" target="_blank">
+          <span class="tool-icon">🌩️</span>
+          <div class="tool-info">
+            <span class="tool-name">NickelBlock Forecasting</span>
+            <span class="tool-desc">Gulf Coast expert regional forecasts</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://www.wunderground.com/personal-weather-station/dashboard?ID=KALFAIRH25" target="_blank">
+          <span class="tool-icon">🌦️</span>
+          <div class="tool-info">
+            <span class="tool-name">WU Fairhope Station</span>
+            <span class="tool-desc">Personal weather station — hyperlocal data</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+        <a class="tool-row" href="https://forecast.weather.gov/MapClick.php?CityName=Fairhope&state=AL&site=MOB&textField1=30.5227&textField2=-87.9036" target="_blank">
+          <span class="tool-icon">🏛️</span>
+          <div class="tool-info">
+            <span class="tool-name">NWS Fairhope Forecast</span>
+            <span class="tool-desc">Official NWS Mobile forecast for Fairhope</span>
+          </div>
+          <span class="tool-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="card about-card">
+      <div class="card-title">ABOUT</div>
+      <p class="about-text">
+        Lower Alabama Outdoors — one dashboard for weather, radar, tides, and bite times on the
+        eastern shore of Mobile Bay. Weather from <a href="https://open-meteo.com" target="_blank">Open-Meteo</a>,
+        tides from <a href="https://api.tidesandcurrents.noaa.gov" target="_blank">NOAA CO-OPS</a>.
+        Weather centered on Fairhope, AL · Tides at Point Clear, AL.
+      </p>
+      <button class="refresh-btn" onclick="initApp()">↺ Refresh All Data</button>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
